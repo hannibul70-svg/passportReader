@@ -1,0 +1,5 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>pub.dev TLS 진단 기록</title></head><body>
+<h1>pub.dev TLS 진단 기록</h1><p><strong>결론:</strong> pub.dev에 대한 TLS 협상이 이 PC 또는 네트워크 경로에서 실패합니다.</p>
+<table border="1"><tr><th>확인</th><th>결과</th></tr><tr><td>DNS</td><td>기본·1.1.1.1·8.8.8.8 모두 34.36.0.14</td></tr><tr><td>TCP 443</td><td>연결 성공</td></tr><tr><td>curl</td><td>Schannel SEC_E_INVALID_TOKEN 실패</td></tr><tr><td>OpenSSL SNI</td><td>packet length too long 실패</td></tr><tr><td>Google TLS</td><td>정상</td></tr></table>
+<p>네트워크 관리자에게 pub.dev:443 TLS/SNI 통과 및 HTTPS 검사 예외 여부를 요청해야 합니다. 인증서 검증 비활성화·호스트 변경·비공식 미러는 적용하지 않았습니다.</p>
+</body></html>

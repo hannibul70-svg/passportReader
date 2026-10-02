@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flutter OCR MVP 요구사항 검토본</title>
+  <style>
+    :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #172033; background: #f5f7fb; }
+    body { max-width: 960px; margin: 0 auto; padding: 40px 24px 72px; line-height: 1.65; }
+    article { background: #fff; border-radius: 16px; box-shadow: 0 8px 28px #24375a18; padding: 40px; }
+    h1, h2 { color: #102a56; } h1 { margin-top: 0; } h2 { margin-top: 38px; border-bottom: 2px solid #dce6f6; padding-bottom: 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; } th, td { border: 1px solid #d9e1ec; padding: 10px; text-align: left; vertical-align: top; } th { background: #edf3fc; }
+    .notice { padding: 14px 16px; border-left: 4px solid #2878d4; background: #eef6ff; }
+    .confirmed { color: #0b6b43; font-weight: 700; } a { color: #075db7; }
+  </style>
+</head>
+<body>
+  <article>
+    <h1>Flutter OCR MVP 요구사항 검토본</h1>
+    <p class="notice"><strong>검토용 초안 · 2026-10-01</strong><br>이 문서는 구현 착수 전 확인용입니다. Flutter 소스 코드와 NFC 기능은 아직 만들지 않았습니다.</p>
+
+    <h2>1. 확정된 방향</h2>
+    <table><thead><tr><th>항목</th><th>결정</th></tr></thead><tbody>
+      <tr><td>하이브리드 프레임워크</td><td><span class="confirmed">Flutter</span></td></tr>
+      <tr><td>1차 구현</td><td>카메라 가이드, OCR, MRZ 파싱·체크섬, 결과 확인 화면</td></tr>
+      <tr><td>NFC 전자여권</td><td>OCR MVP를 실제 Android/iPhone에서 설치·기동·테스트 완료한 뒤 2차 진행</td></tr>
+      <tr><td>작업 방식</td><td>Coordinator, Builder, Verifier 3롤 하네스</td></tr>
+      <tr><td>용어</td><td>NEC는 NFC로 해석</td></tr>
+    </tbody></table>
+
+    <h2>2. MVP 저장·서버 연동 정책</h2>
+    <p><strong>권장안은 앱 메모리 일시 처리입니다.</strong> 여권번호, 생년월일, 얼굴 사진, MRZ는 앱이 열려 있는 동안에만 메모리에 두고, 취소·뒤로가기·삭제·앱 종료 시 제거합니다.</p>
+    <ul>
+      <li>서버 전송 없음</li>
+      <li>휴대폰 파일·사진첩·데이터베이스 저장 없음</li>
+      <li>OCR 원문·MRZ·사진·NFC APDU 로그 기록 없음</li>
+      <li>이전 촬영 결과 재조회 없음</li>
+    </ul>
+    <table><thead><tr><th>선택지</th><th>설명</th><th>MVP</th></tr></thead><tbody>
+      <tr><td>A. 앱 메모리 일시 처리</td><td>앱 실행 중 확인만 가능, 종료 시 삭제</td><td><span class="confirmed">채택 권장</span></td></tr>
+      <tr><td>B. 기기 암호화 저장</td><td>재조회 가능, 삭제·분실·백업 정책 필요</td><td>미적용</td></tr>
+      <tr><td>C. 서버 전송·저장</td><td>업무 연계 가능, 동의·암호화·접근제어·보유기간 필요</td><td>미적용</td></tr>
+    </tbody></table>
+
+    <h2>3. 1차 Flutter OCR MVP 범위</h2>
+    <ol>
+      <li>Android/iOS Flutter 앱 골격과 카메라 권한</li>
+      <li>여권 데이터면·MRZ 가이드 창</li>
+      <li>흐림·반사광·기울어짐·MRZ 미검출 안내</li>
+      <li>기기 내 OCR 및 MRZ TD3 체크섬 검증</li>
+      <li>인적사항, 사진 영역, MRZ 원문 결과 화면</li>
+      <li>취소·재촬영·오류 안내와 메모리 데이터 제거</li>
+    </ol>
+    <p><strong>NFC 칩 읽기는 구현하지 않습니다.</strong> 1차 MVP에서는 NFC 버튼을 숨기는 방안을 권장합니다.</p>
+
+    <h2>4. 3롤 하네스</h2>
+    <table><thead><tr><th>역할</th><th>책임</th><th>파일 수정</th></tr></thead><tbody>
+      <tr><td>Coordinator</td><td>요구사항, 범위, 완료 기준, 승인 경계</td><td>없음</td></tr>
+      <tr><td>Builder</td><td>Flutter OCR 구현, 테스트, 문서 갱신</td><td>있음</td></tr>
+      <tr><td>Verifier</td><td>독립 검증, 개인정보 비저장, 회귀 확인</td><td>없음</td></tr>
+    </tbody></table>
+    <p>순서: <code>Coordinator → Builder → Verifier → Coordinator</code></p>
+
+    <h2>5. NFC 2차 착수 조건</h2>
+    <ul>
+      <li>Android 실제 기기에서 앱 설치·기동·OCR 테스트 통과</li>
+      <li>iPhone 실제 기기에서 앱 설치·기동·OCR 테스트 통과</li>
+      <li>카메라 가이드, 촬영, MRZ 검증, 결과 화면 테스트 통과</li>
+      <li>취소 또는 앱 종료 뒤 여권 정보와 사진이 남지 않음 확인</li>
+      <li>Verifier 독립 검증 통과와 Coordinator 완료 확인</li>
+    </ul>
+
+    <h2>6. 검토 필요 항목</h2>
+    <ol>
+      <li>초기 지원 범위를 한국 여권으로 제한할지</li>
+      <li>얼굴 사진 영역을 단순 표시만 할지, 품질 평가까지 할지</li>
+      <li>OCR 단계에서 NFC 버튼을 숨길지, 준비 중으로 표시할지</li>
+      <li>실제 여권·승인된 테스트 문서·테스트 기기 목록</li>
+    </ol>
+
+    <h2>7. 참고</h2>
+    <ul>
+      <li><a href="01_passport_reader_mobile_spec.html">기술 전체 명세</a></li>
+      <li><a href="https://www.icao.int/publications/doc-series/doc-9303">ICAO Doc 9303</a></li>
+      <li><a href="https://developer.android.com/codelabs/mlkit-android-translate">Android ML Kit OCR</a></li>
+      <li><a href="https://developer.apple.com/documentation/CoreNFC">Apple Core NFC</a></li>
+    </ul>
+  </article>
+</body>
+</html>
