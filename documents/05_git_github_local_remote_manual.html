@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub와 로컬 Git 저장소 연결 매뉴얼</title>
+  <style>
+    body { max-width: 920px; margin: 40px auto; padding: 0 20px; font-family: system-ui, sans-serif; line-height: 1.65; color: #1f2937; }
+    h1, h2 { color: #0b4f6c; } code, pre { font-family: Consolas, monospace; }
+    code { background: #eef2f7; padding: 2px 5px; border-radius: 4px; }
+    pre { padding: 16px; overflow-x: auto; background: #11212b; color: #e8f1f5; border-radius: 8px; }
+    table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; } th { background: #e8f4f8; }
+    .note { padding: 14px; background: #fff7dd; border-left: 4px solid #e5a400; }
+  </style>
+</head>
+<body>
+  <h1>GitHub와 로컬 Git 저장소 연결 매뉴얼</h1>
+  <h2>1. 핵심 개념</h2>
+  <table>
+    <tr><th>구분</th><th>의미</th></tr>
+    <tr><td>GitHub 저장소</td><td>인터넷에 있는 원격 보관함입니다.</td></tr>
+    <tr><td>로컬 Git 저장소</td><td>내 PC 프로젝트 폴더의 <code>.git</code> 폴더입니다.</td></tr>
+    <tr><td>git push</td><td>내 PC의 커밋을 GitHub로 업로드합니다.</td></tr>
+    <tr><td>git pull</td><td>GitHub의 변경사항을 내 PC에 반영합니다.</td></tr>
+  </table>
+  <pre>내 PC 프로젝트 폴더
+├─ 소스 코드
+├─ documents
+└─ .git                ← 로컬 Git 저장소
+       │
+       │ git push / git pull
+       ▼
+GitHub 원격 저장소</pre>
+  <h2>2. 기존 PC 프로젝트를 GitHub에 처음 연결</h2>
+  <p>GitHub에서 빈 저장소를 먼저 만들고, PC에 이미 프로젝트 폴더가 있는 경우 사용합니다.</p>
+  <pre>cd C:\WorkSpaces_Codex\프로젝트폴더
+
+git init
+git branch -M main
+git remote add origin https://github.com/계정명/저장소명.git
+
+git add .
+git commit -m "feat: initial commit"
+git push -u origin main</pre>
+  <p>확인 명령:</p>
+  <pre>git status
+git remote -v
+git log -1 --oneline</pre>
+  <h2>3. 다른 PC에서 프로젝트 이어서 작업</h2>
+  <p>다른 PC에는 <code>git clone</code>을 사용합니다. 이미 복제한 폴더에서 <code>git init</code>을 다시 실행하지 않습니다.</p>
+  <pre>cd C:\WorkSpaces_Codex
+git clone https://github.com/계정명/저장소명.git
+cd 저장소명</pre>
+  <h2>4. 일상적인 작업 순서</h2>
+  <pre>git status
+git add .
+git commit -m "feat: 변경 내용 설명"
+git push</pre>
+  <p>작업 시작 전 다른 사람이 변경했을 수 있다면 먼저 <code>git pull --rebase</code>를 실행합니다.</p>
+  <h2>5. 주의사항</h2>
+  <div class="note"><strong>커밋 금지:</strong> 비밀번호, API 키, 인증서, 개인키, <code>.env</code>, 서명 파일, 운영 데이터. 이 파일들은 <code>.gitignore</code>에 추가합니다.</div>
+  <ul>
+    <li>GitHub 저장소 생성만으로 PC 폴더가 자동으로 Git 저장소가 되지는 않습니다.</li>
+    <li><code>fatal: not a git repository</code>는 현재 폴더에 <code>.git</code>이 없다는 뜻입니다.</li>
+    <li>GitHub에 README를 먼저 만들고 로컬에도 독립 커밋을 만들면 이력이 갈라질 수 있습니다.</li>
+  </ul>
+  <h2>6. 빠른 선택표</h2>
+  <table>
+    <tr><th>상황</th><th>명령</th></tr>
+    <tr><td>PC에 기존 프로젝트가 있고 GitHub는 비어 있음</td><td><code>git init</code> → <code>git remote add origin</code> → 커밋·푸시</td></tr>
+    <tr><td>새 PC에서 GitHub 프로젝트를 받음</td><td><code>git clone</code></td></tr>
+    <tr><td>현재 연결 상태 확인</td><td><code>git remote -v</code></td></tr>
+    <tr><td>변경사항 확인</td><td><code>git status</code></td></tr>
+  </table>
+</body>
+</html>
