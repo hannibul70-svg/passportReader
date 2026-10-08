@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>처음 사용하는 사람을 위한 Android Studio 실행 안내</title>
+  <style>
+    :root { --ink:#172033; --muted:#526075; --line:#dbe2ed; --page:#f5f7fb; --card:#fff; --brand:#1769e0; --good:#087a43; --warn:#985b00; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--page); font-family:"Noto Sans KR","Malgun Gothic",Arial,sans-serif; line-height:1.7; }
+    main { width:min(920px, calc(100% - 32px)); margin:0 auto; padding:42px 0 72px; }
+    h1,h2,h3 { line-height:1.35; } h1 { margin:0 0 8px; font-size:clamp(28px,5vw,42px); } h2 { margin-top:42px; padding-bottom:9px; border-bottom:2px solid var(--line); font-size:24px; } h3 { margin:28px 0 10px; font-size:19px; }
+    .lead { margin:0; color:var(--muted); font-size:17px; } .card,.notice,.step { background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:0 3px 12px #1523400b; }
+    .notice { margin-top:24px; padding:16px 18px; border-left:5px solid var(--brand); } .notice strong { color:var(--brand); }
+    .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:22px 0; } .flow div { padding:13px 10px; border-radius:10px; background:#eaf2ff; color:#154f9b; font-weight:700; text-align:center; font-size:14px; }
+    .diagram { margin:24px 0; padding:24px; border:1px solid var(--line); border-radius:14px; background:#fff; } .diagram h3 { margin:0 0 18px; } .process { display:flex; align-items:center; justify-content:center; gap:10px; } .process-node { min-width:132px; padding:14px 12px; border:2px solid #1769e0; border-radius:10px; background:#f4f8ff; color:#154f9b; text-align:center; font-weight:700; } .arrow { color:#1769e0; font-size:26px; font-weight:700; } .decision-flow { display:grid; justify-items:center; gap:12px; } .decision { display:grid; place-items:center; width:140px; height:82px; color:#805000; background:#fff5dc; border:2px solid #d89300; clip-path:polygon(50% 0, 100% 50%, 50% 100%, 0 50%); font-weight:700; text-align:center; } .branches { display:grid; width:min(620px,100%); grid-template-columns:1fr 1fr; gap:34px; text-align:center; } .branch { position:relative; padding:14px; border-radius:10px; font-weight:700; } .branch::before { content:"↓"; position:absolute; top:-30px; left:50%; color:#526075; font-size:22px; } .branch.yes { color:#075f35; background:#e7f8ef; border:2px solid #48ad79; } .branch.no { color:#814d00; background:#fff5dc; border:2px solid #d89300; } .diagram-note { margin:16px 0 0; color:var(--muted); text-align:center; font-size:14px; }
+    .step { display:grid; grid-template-columns:46px 1fr; gap:14px; margin:14px 0; padding:17px; } .number { display:grid; place-items:center; width:34px; height:34px; border-radius:50%; color:#fff; background:var(--brand); font-weight:800; } .step p { margin:0; } .step strong { display:block; margin-bottom:5px; font-size:17px; }
+    code,.path { display:block; margin:9px 0; padding:10px 12px; overflow-wrap:anywhere; border-radius:8px; color:#133767; background:#eef4ff; font-family:Consolas,"Courier New",monospace; font-size:14px; } .inline { display:inline; margin:0; padding:2px 5px; }
+    .tree { margin:10px 0; padding:14px; overflow:auto; border-radius:8px; color:#d9f3e5; background:#10241b; font-family:Consolas,"Courier New",monospace; white-space:pre; }
+    .choice { display:grid; grid-template-columns:1fr 1fr; gap:18px; } .choice .card { padding:20px; } .good { border-top:5px solid var(--good); } .warning { border-top:5px solid #e29b18; } .choice h3 { margin-top:0; } .choice p { color:var(--muted); }
+    table { width:100%; border-collapse:collapse; background:#fff; } th,td { padding:12px; border:1px solid var(--line); text-align:left; vertical-align:top; } th { background:#edf3fc; } ul,ol { padding-left:24px; } li { margin:6px 0; } a { color:#155ebd; } .check { color:var(--good); font-weight:800; } .stop { color:#a42b28; font-weight:800; }
+    @media (max-width:650px) { main { width:min(100% - 22px,920px); padding-top:26px; } .flow,.choice { grid-template-columns:1fr; } .process { flex-direction:column; } .arrow { transform:rotate(90deg); } .branches { gap:16px; } .step { grid-template-columns:36px 1fr; gap:10px; padding:14px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>처음 사용하는 사람을 위한<br>Android Studio 앱 실행 안내</h1>
+    <p class="lead">프로젝트를 열고, 휴대폰에서 여권 OCR 앱을 실행하는 가장 쉬운 순서입니다.</p>
+    <div class="notice"><strong>이 문서의 목표:</strong> APK 파일을 만들거나 배포하는 것이 아닙니다. 내 휴대폰에 개발용 앱을 설치해 카메라 화면을 확인하는 방법입니다.</div>
+
+    <h2>전체 순서 한눈에 보기</h2>
+    <div class="flow"><div>1. 휴대폰 준비</div><div>2. 프로젝트 열기</div><div>3. Flutter 확인</div><div>4. ▶ 실행</div></div>
+    <section class="diagram" aria-label="앱 실행 전체 순서도">
+      <h3>실행 순서도</h3>
+      <div class="process"><div class="process-node">휴대폰 연결<br>USB 디버깅 허용</div><div class="arrow" aria-hidden="true">→</div><div class="process-node">프로젝트 루트<br>폴더 열기</div><div class="arrow" aria-hidden="true">→</div><div class="process-node">Flutter와<br>main.dart 확인</div><div class="arrow" aria-hidden="true">→</div><div class="process-node">휴대폰 선택<br>▶ Run 실행</div></div>
+      <p class="diagram-note">왼쪽에서 오른쪽 순서대로 한 단계씩 진행합니다.</p>
+    </section>
+    <section class="diagram" aria-label="Flutter 플러그인 확인 절차도">
+      <h3>Flutter 확인 절차도</h3>
+      <div class="decision-flow"><div class="process-node">Run &gt; Edit Configurations...<br>열기</div><div class="arrow" aria-hidden="true">↓</div><div class="decision">Flutter가<br>보이나요?</div><div class="branches"><div class="branch yes">예<br>Flutter 실행 구성 만들기<br>→ main.dart 선택</div><div class="branch no">아니오<br>Plugins에서 Flutter 설치<br>→ Android Studio 재시작</div></div></div>
+      <p class="diagram-note">Flutter가 보이지 않으면 실행 구성을 만들기 전에 플러그인부터 설치합니다.</p>
+    </section>
+
+    <h2>1. 휴대폰 준비</h2>
+    <div class="step"><div class="number">1</div><div><strong>휴대폰에서 USB 디버깅 켜기</strong><p>휴대폰의 <b>설정 &gt; 휴대전화 정보 &gt; 소프트웨어 정보</b>로 들어가서 <b>빌드 번호</b>를 7번 누릅니다. 비밀번호를 입력한 뒤, 설정으로 돌아가 <b>개발자 옵션 &gt; USB 디버깅</b>을 켭니다.</p></div></div>
+    <div class="step"><div class="number">2</div><div><strong>USB 케이블 연결</strong><p>휴대폰 잠금을 풀고 PC와 연결합니다. 휴대폰에 “USB 디버깅을 허용할까요?”가 나오면 <b>허용</b>을 누릅니다. 가능하면 “이 컴퓨터에서 항상 허용”도 체크합니다.</p></div></div>
+    <p class="notice"><strong>권장:</strong> 이 앱은 카메라를 사용하므로 에뮬레이터보다 실제 휴대폰으로 확인하세요.</p>
+
+    <h2>2. 프로젝트 열기</h2>
+    <div class="step"><div class="number">1</div><div><strong>Android Studio를 엽니다</strong><p>시작 화면에서는 <b>Open</b>, 다른 프로젝트가 열려 있다면 <b>File &gt; Open</b>을 누릅니다.</p></div></div>
+    <div class="step"><div class="number">2</div><div><strong>아래 폴더를 선택합니다</strong><code>C:\WorkSpaces_Codex\passport-reader-mobile</code><p><b>주의:</b> <code class="inline">android</code> 폴더만 열지 마세요. 반드시 <code class="inline">passport-reader-mobile</code> 전체 폴더를 엽니다.</p></div></div>
+    <div class="step"><div class="number">3</div><div><strong>기다립니다</strong><p>아래쪽에 <code class="inline">Loading</code>, <code class="inline">Getting dependencies</code>, <code class="inline">Indexing</code> 같은 문구가 보이면 끝날 때까지 기다립니다. 첫 실행은 시간이 걸릴 수 있습니다.</p></div></div>
+
+    <h2>3. <code class="inline">lib &gt; main.dart</code> 찾기</h2>
+    <p>왼쪽에 파일 목록이 안 보이거나 <code class="inline">lib</code>가 보이지 않으면 아래 순서대로 합니다.</p>
+    <div class="step"><div class="number">1</div><div><strong>파일 목록 창 열기</strong><p>맨 위 메뉴에서 <b>View &gt; Tool Windows &gt; Project</b>를 누릅니다.</p></div></div>
+    <div class="step"><div class="number">2</div><div><strong>표시 방식을 Project로 바꾸기</strong><p>왼쪽 파일 목록의 맨 위에서 <b>Android ▼</b>를 클릭하고, 목록에서 <b>Project</b>를 선택합니다.</p></div></div>
+    <div class="step"><div class="number">3</div><div><strong>main.dart 열기</strong><p>프로젝트 이름 왼쪽의 작은 화살표를 눌러 폴더를 펼칩니다.</p><div class="tree">passport-reader-mobile
+  ├─ android
+  ├─ documents
+  ├─ lib
+  │   └─ main.dart  ← 이것을 두 번 클릭
+  └─ test</div></div></div>
+
+    <h2>4. Flutter가 있는지 확인하기</h2>
+    <p>Android Studio의 맨 위 메뉴에서 다음을 누릅니다.</p><code>Run &gt; Edit Configurations...</code>
+    <div class="choice">
+      <section class="card good"><h3>Flutter가 보이는 경우</h3><p>아래의 “5. 실행 구성 만들기”로 갑니다.</p><p class="check">정상 상태입니다.</p></section>
+      <section class="card warning"><h3>Flutter가 보이지 않는 경우</h3><p>Flutter 플러그인이 없거나 꺼진 상태입니다.</p><p>아래의 “6. Flutter 플러그인 설치”로 갑니다.</p></section>
+    </div>
+
+    <h2>5. Flutter가 있을 때: 실행 구성 만들기</h2>
+    <div class="step"><div class="number">1</div><div><strong>새 실행 구성 추가</strong><p><b>Run &gt; Edit Configurations...</b> 창에서 왼쪽 위의 <b>+</b> 버튼을 누른 뒤 <b>Flutter</b>를 선택합니다.</p></div></div>
+    <div class="step"><div class="number">2</div><div><strong>실행 파일 선택</strong><p><b>Dart entrypoint</b> 입력칸 오른쪽의 폴더 아이콘을 누릅니다. 프로젝트 안의 <b>lib &gt; main.dart</b>를 선택합니다.</p><code>C:\WorkSpaces_Codex\passport-reader-mobile\lib\main.dart</code></div></div>
+    <div class="step"><div class="number">3</div><div><strong>저장</strong><p><b>Apply</b>를 누르고 <b>OK</b>를 누릅니다. Android Studio 상단에 <code class="inline">main.dart</code> 또는 <code class="inline">passport_reader_mobile</code>가 보이면 성공입니다.</p></div></div>
+    <p>대안: <code class="inline">lib/main.dart</code> 코드의 <code class="inline">void main()</code> 왼쪽에 초록색 ▶가 보인다면, 그 버튼을 눌러 <b>Run 'main.dart'</b>를 선택해도 됩니다.</p>
+
+    <h2>6. Flutter가 없을 때: 플러그인 설치</h2>
+    <div class="step"><div class="number">1</div><div><strong>설정 열기</strong><p><b>File &gt; Settings &gt; Plugins</b>를 누릅니다.</p></div></div>
+    <div class="step"><div class="number">2</div><div><strong>Flutter 검색</strong><p>위쪽의 <b>Marketplace</b> 탭을 누르고, 검색창에 <b>Flutter</b>를 입력합니다.</p></div></div>
+    <div class="step"><div class="number">3</div><div><strong>설치와 재시작</strong><p><b>Install</b>을 누릅니다. Dart 플러그인 설치 안내가 나오면 함께 설치합니다. 설치가 끝나면 <b>Restart IDE</b>를 눌러 Android Studio를 다시 시작합니다.</p></div></div>
+    <p class="notice"><strong>Enable 버튼이 보이는 경우:</strong> 이미 Flutter 플러그인이 설치되어 있으나 꺼진 상태입니다. <b>Enable</b>을 누르고 Android Studio를 재시작합니다.</p>
+
+    <h2>7. 앱 실행하기</h2>
+    <div class="step"><div class="number">1</div><div><strong>상단에서 두 가지를 확인</strong><p>첫 번째 선택 상자에는 <b>main.dart</b> 또는 <b>passport_reader_mobile</b>, 두 번째 선택 상자에는 연결한 <b>휴대폰 모델명</b>이 보여야 합니다.</p></div></div>
+    <div class="step"><div class="number">2</div><div><strong>▶ Run 버튼 클릭</strong><p>초록색 ▶ 버튼을 누릅니다. 처음에는 앱 설치 때문에 기다리는 시간이 필요합니다.</p></div></div>
+    <div class="step"><div class="number">3</div><div><strong>휴대폰에서 카메라 권한 허용</strong><p>앱이 열리면 카메라 권한 안내에서 <b>허용</b>을 누릅니다. 여권 사진면 전체와 하단 MRZ 두 줄이 녹색 프레임 안에 보이도록 맞춥니다.</p></div></div>
+
+    <h2>8. 문제 해결</h2>
+    <table>
+      <thead><tr><th>문제</th><th>먼저 할 일</th></tr></thead>
+      <tbody>
+        <tr><td>▶ Run 버튼이 회색</td><td>실행 구성에 <b>main.dart</b>가 선택되었는지 확인합니다. 선택되지 않았다면 5단계를 다시 합니다.</td></tr>
+        <tr><td>Flutter 항목이 없음</td><td>6단계대로 Flutter 플러그인을 설치 또는 활성화합니다.</td></tr>
+        <tr><td>휴대폰 이름이 안 보임</td><td>USB 디버깅, 휴대폰 잠금 해제, “이 컴퓨터 허용” 창, 데이터 전송 가능한 케이블을 확인합니다.</td></tr>
+        <tr><td>카메라가 검은 화면</td><td>휴대폰 설정에서 앱의 카메라 권한을 허용했는지 확인합니다.</td></tr>
+        <tr><td>처음 실행이 오래 걸림</td><td>처음에는 도구와 의존성 준비가 필요할 수 있습니다. 아래쪽 진행 상태가 끝날 때까지 기다립니다.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>9. 꼭 기억할 점</h2>
+    <ul>
+      <li><b>프로젝트 루트 폴더</b>를 엽니다. <code class="inline">android</code> 폴더만 열지 않습니다.</li>
+      <li>휴대폰 선택과 실행 파일 선택은 서로 다른 일입니다.</li>
+      <li>앱 실행은 APK 배포가 아닙니다. 내 휴대폰에 개발용 앱을 임시 설치하는 과정입니다.</li>
+      <li>여권 정보는 민감합니다. 실제 여권 화면을 캡처하거나 외부에 공유하지 마세요.</li>
+    </ul>
+    <h2>공식 참고 자료</h2>
+    <ul>
+      <li><a href="https://docs.flutter.dev/tools/android-studio">Flutter: Android Studio에서 프로젝트 열고 실행하기</a></li>
+      <li><a href="https://developer.android.com/studio/run/device.html">Android: 실제 기기에서 앱 실행하기</a></li>
+      <li><a href="https://developer.android.com/studio/run">Android Studio: 앱 실행하기</a></li>
+    </ul>
+  </main>
+</body>
+</html>

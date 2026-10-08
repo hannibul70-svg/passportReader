@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>여권 촬영 가이드 목업</title>
+  <style>
+    :root { color-scheme: dark; --ink: #eaf1fb; --muted: #9eacbf; --panel: #111b2b; --line: #27364d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #09111d; color: var(--ink); font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif; }
+    main { width: min(1240px, calc(100% - 40px)); margin: 0 auto; padding: 48px 0 64px; }
+    h1 { margin: 0 0 12px; font-size: clamp(26px, 4vw, 40px); }
+    .lead { margin: 0; color: var(--muted); line-height: 1.7; }
+    .notice { margin: 24px 0 36px; padding: 14px 16px; border: 1px solid #33445e; border-radius: 12px; color: #c3d1e5; background: #101b2b; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+    article { overflow: hidden; border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: 0 18px 50px #0005; }
+    .card-copy { padding: 20px; min-height: 148px; }
+    h2 { margin: 0 0 8px; font-size: 20px; }
+    .card-copy p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .tag { display: inline-block; margin-bottom: 8px; color: #7adfff; font-size: 12px; font-weight: 800; letter-spacing: .06em; }
+    .phone { position: relative; width: 100%; aspect-ratio: 9 / 17; overflow: hidden; background: radial-gradient(circle at 50% 30%, #2b4059 0, #0b1522 52%, #050a11 100%); }
+    .phone::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(#0002, transparent 20%, #0001 70%, #0008); }
+    .status { position: absolute; z-index: 2; top: 13px; left: 22px; right: 22px; display: flex; justify-content: space-between; font-weight: 700; font-size: 12px; }
+    .close { position: absolute; z-index: 2; top: 44px; left: 20px; font-size: 30px; line-height: 1; }
+    .top-copy { position: absolute; z-index: 2; top: 68px; left: 26px; right: 26px; text-align: center; font-size: 17px; font-weight: 800; line-height: 1.35; }
+    .sub-copy { position: absolute; z-index: 2; top: 116px; left: 24px; right: 24px; text-align: center; color: #c6d1df; font-size: 11px; }
+    .passport-frame { position: absolute; z-index: 1; top: 180px; left: 7%; width: 86%; aspect-ratio: 1.42; border: 3px solid var(--accent); border-radius: 14px; box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 55%, transparent), inset 0 0 16px #0008; }
+    .passport { position: absolute; inset: 9px; padding: 12px; overflow: hidden; border-radius: 9px; color: #15233b; background: linear-gradient(135deg, #d7e6ef, #b4c4da 52%, #f1ddd9); font-size: 7px; line-height: 1.25; }
+    .passport::before { content: "PASSPORT  ·  SAMPLE ONLY"; position: absolute; top: 12px; left: 13px; color: #344b6b; font-size: 9px; font-weight: 900; letter-spacing: .08em; }
+    .portrait { position: absolute; top: 35px; left: 13px; width: 31%; height: 54%; border: 2px solid color-mix(in srgb, var(--accent) 60%, white); border-radius: 4px; background: linear-gradient(#e3b9a8 0 33%, #202c3b 34% 100%); }
+    .portrait::before { content: ""; position: absolute; top: 13%; left: 24%; width: 52%; aspect-ratio: 1; border-radius: 50%; background: #5a3d32; box-shadow: 0 19px 0 8px #263343; }
+    .fields { position: absolute; top: 37px; left: 49%; right: 12px; display: grid; gap: 6px; font-weight: 800; }
+    .field { border-bottom: 1px solid #71839d; padding-bottom: 3px; }
+    .field span { display: block; color: #3d5272; font-weight: 600; font-size: 6px; }
+    .mrz { position: absolute; bottom: 10px; left: 13px; right: 13px; padding: 4px 5px; border: 1px solid color-mix(in srgb, var(--accent) 60%, white); color: #182943; background: #f0f1e8a8; font-family: monospace; font-size: 7px; letter-spacing: .02em; }
+    .label { position: absolute; z-index: 3; padding: 5px 7px; border: 1px solid var(--accent); border-radius: 7px; color: #fff; background: #091525e8; font-size: 9px; font-weight: 800; white-space: nowrap; }
+    .label::after { content: ""; position: absolute; width: 1px; background: var(--accent); transform-origin: top; }
+    .a .label:nth-of-type(1) { top: 261px; left: 4%; }.a .label:nth-of-type(1)::after { height: 48px; left: 74px; top: 25px; transform: rotate(-30deg); }
+    .a .label:nth-of-type(2) { top: 206px; left: 45%; }.a .label:nth-of-type(2)::after { height: 40px; left: 36px; top: 25px; transform: rotate(23deg); }
+    .a .label:nth-of-type(3) { top: 205px; right: 3%; }.a .label:nth-of-type(3)::after { height: 55px; left: 8px; top: 25px; transform: rotate(22deg); }
+    .a .label:nth-of-type(4) { top: 288px; right: 5%; }.a .label:nth-of-type(4)::after { height: 34px; left: 8px; top: 24px; transform: rotate(55deg); }
+    .a .label:nth-of-type(5) { top: 316px; right: 6%; }.a .label:nth-of-type(5)::after { height: 28px; left: 7px; top: 23px; transform: rotate(70deg); }
+    .a .label:nth-of-type(6) { top: 220px; left: 29%; }.a .label:nth-of-type(6)::after { height: 35px; left: 42px; top: 23px; transform: rotate(-9deg); }
+    .a .label:nth-of-type(7) { top: 352px; left: 5%; }.a .label:nth-of-type(7)::after { height: 38px; left: 75px; top: 22px; transform: rotate(-81deg); }
+    .a .label:nth-of-type(8) { top: 379px; left: 5%; }.a .label:nth-of-type(8)::after { height: 38px; left: 75px; top: 3px; transform: rotate(-81deg); }
+    .bottom-note { position: absolute; z-index: 2; bottom: 72px; left: 7%; right: 7%; padding: 13px; border: 1px solid #3a506d; border-radius: 12px; background: #091423eb; color: #dce8f6; text-align: center; font-size: 11px; }
+    .shutter { position: absolute; z-index: 2; bottom: 21px; left: 15%; width: 70%; padding: 13px; border: 0; border-radius: 14px; color: #04111f; background: var(--accent); font-weight: 900; font-size: 14px; }
+    .b { --accent: #ffbf3f; }.c { --accent: #63f59b; }.a { --accent: #33d8f5; }
+    .b .passport-frame { top: 176px; }.b .portrait { box-shadow: 0 0 12px #ffe088; }.b .field { outline: 1px solid #ffc650; outline-offset: 2px; border-bottom: 0; border-radius: 2px; padding: 3px; }.b .mrz { outline: 2px solid #ffd66f; outline-offset: 2px; }.side-steps { position: absolute; z-index: 3; top: 235px; right: 4%; display: grid; gap: 6px; }.side-steps div { padding: 6px 8px; border: 1px solid #d8971c; border-radius: 14px 4px 4px 14px; background: #1a1309e8; color: #ffe2a1; font-size: 8px; font-weight: 800; }.side-steps b { display: inline-grid; place-items: center; width: 13px; height: 13px; margin-right: 4px; border-radius: 50%; background: #ffbf3f; color: #1d1605; }.b .mrz-caption { position: absolute; z-index: 3; top: 383px; left: 15%; right: 15%; display: flex; justify-content: space-around; color: white; font-size: 8px; }
+    .checks { position: absolute; z-index: 3; top: 163px; left: 7%; right: 7%; display: flex; justify-content: space-between; color: #caffd7; font-size: 8px; font-weight: 800; }.check { padding: 5px 7px; border: 1px solid #39c86b; border-radius: 16px; background: #071b10e8; }.check::before { content: "✓"; display: inline-grid; place-items: center; width: 12px; height: 12px; margin-right: 4px; border-radius: 50%; color: #062110; background: #63f59b; }.c .passport-frame { top: 205px; }.c .passport { box-shadow: inset 0 0 0 1px #84f7af; }.c .quality { position: absolute; z-index: 3; top: 126px; left: 26%; right: 26%; padding: 8px; border-radius: 20px; background: #0b1a15e8; color: #d7ffe4; text-align: center; font-size: 10px; }.c .quality::before { content: "◔"; margin-right: 5px; color: #63f59b; }.c .bottom-sheet { position: absolute; z-index: 3; bottom: 66px; left: 5%; right: 5%; padding: 13px; border: 1px solid #214e35; border-radius: 14px; background: #07130eee; }.sheet-heading { display: flex; justify-content: space-between; margin-bottom: 9px; font-size: 11px; font-weight: 900; }.sheet-heading span { color: #8eb79d; font-size: 8px; }.chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; }.chip { padding: 6px; border: 1px solid #2e9f57; border-radius: 6px; color: #dafbe4; font-size: 8px; }.chip::before { content: "✓"; color: #63f59b; margin-right: 4px; }.c .shutter { bottom: 15px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 580px) { main { width: min(100% - 24px, 430px); padding-top: 28px; }.grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>여권 촬영 가이드 목업</h1>
+    <p class="lead">여권 사진면의 8개 인식 대상이 프레임 안에 선명하게 들어오도록 돕는 촬영 화면 3안입니다.</p>
+    <p class="notice">모든 여권·인물·번호는 디자인 시연용 가상 정보입니다. 차세대 한국 전자여권의 개인정보면 표기와 ICAO TD3 MRZ(2행·각 44자) 구조를 기준으로 배치했으며, 실제 OCR 또는 신원 확인 기능은 포함하지 않습니다.</p>
+    <section class="grid" aria-label="여권 촬영 화면 디자인 3안">
+      <article>
+        <div class="phone a" style="--accent:#33d8f5">
+          <div class="status"><span>9:41</span><span>● ● ● 100%</span></div><div class="close">×</div>
+          <div class="top-copy">여권 사진면을 프레임 안에 맞춰주세요</div><div class="sub-copy">글자가 선명하게 보이도록 촬영하세요</div>
+          <div class="passport-frame"><div class="passport"><div class="portrait"></div><div class="fields"><div class="field"><span>종류 / Type · 발행국 코드 / Code</span>P · KOR</div><div class="field"><span>여권번호 / Passport No.</span>M123 A4567</div><div class="field"><span>성 / Surname</span>HONG</div><div class="field"><span>이름 / Given names</span>GILDONG</div><div class="field"><span>국적 / Nationality</span>REPUBLIC OF KOREA</div><div class="field"><span>생년월일 / Date of birth</span>15 1월/JAN 1990</div><div class="field"><span>만료일 / Date of expiry</span>01 5월/MAY 2030</div></div><div class="mrz">P&lt;KORHONG&lt;&lt;GILDONG&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>M123A45674KOR9001158M3005017&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;00</div></div></div>
+          <span class="label">얼굴 사진</span><span class="label">이름</span><span class="label">여권번호</span><span class="label">생년월일</span><span class="label">만료일</span><span class="label">여권종류</span><span class="label">MRZ 라인 1</span><span class="label">MRZ 라인 2</span>
+          <div class="bottom-note">▣ 글자가 선명하게 보이도록 촬영하세요</div><button class="shutter">▣ 자동 촬영</button>
+        </div>
+        <div class="card-copy"><span class="tag">A · 상세 콜아웃</span><h2>각 필드를 직접 안내</h2><p>초기 사용자를 위해 8개 인식 항목의 위치를 선과 라벨로 명확히 알려줍니다.</p></div>
+      </article>
+      <article>
+        <div class="phone b" style="--accent:#ffbf3f">
+          <div class="status"><span>9:41</span><span>● ● ● 100%</span></div><div class="close">×</div>
+          <div class="top-copy">필수 정보가 모두 보이도록 맞춰주세요</div><div class="sub-copy">사진 영역과 MRZ 두 줄을 확인합니다</div>
+          <div class="passport-frame"><div class="passport"><div class="portrait"></div><div class="fields"><div class="field"><span>종류 / Type · 발행국 코드 / Code</span>P · KOR</div><div class="field"><span>여권번호 / Passport No.</span>M123 A4567</div><div class="field"><span>성 / Surname</span>HONG</div><div class="field"><span>이름 / Given names</span>GILDONG</div><div class="field"><span>국적 / Nationality</span>REPUBLIC OF KOREA</div><div class="field"><span>생년월일 / Date of birth</span>15 1월/JAN 1990</div><div class="field"><span>만료일 / Date of expiry</span>01 5월/MAY 2030</div></div><div class="mrz">P&lt;KORHONG&lt;&lt;GILDONG&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>M123A45674KOR9001158M3005017&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;00</div></div></div>
+          <div class="side-steps"><div><b>1</b>이름</div><div><b>2</b>여권번호</div><div><b>3</b>생년월일</div><div><b>4</b>여권종류</div><div><b>5</b>만료일</div><div><b>6</b>MRZ 두 줄</div></div><div class="mrz-caption"><span>MRZ 1</span><span>MRZ 2</span></div>
+          <div class="bottom-note">! MRZ 두 줄을 가리지 마세요</div><button class="shutter">◉ 촬영</button>
+        </div>
+        <div class="card-copy"><span class="tag" style="color:#ffd371">B · 단계형 가이드</span><h2>영역별로 순서 안내</h2><p>개인정보와 MRZ 영역을 구획으로 강조해 사용자가 빠뜨린 정보를 파악하기 쉽습니다.</p></div>
+      </article>
+      <article>
+        <div class="phone c" style="--accent:#63f59b">
+          <div class="status"><span>9:41</span><span>● ● ● 100%</span></div><div class="close">×</div>
+          <div class="top-copy">여권 사진면 전체를 화면에 담아주세요</div><div class="quality">8개 영역 확인 중</div>
+          <div class="checks"><span class="check">문서 전체</span><span class="check">빛 반사 없음</span></div>
+          <div class="passport-frame"><div class="passport"><div class="portrait"></div><div class="fields"><div class="field"><span>종류 / Type · 발행국 코드 / Code</span>P · KOR</div><div class="field"><span>여권번호 / Passport No.</span>M123 A4567</div><div class="field"><span>성 / Surname</span>HONG</div><div class="field"><span>이름 / Given names</span>GILDONG</div><div class="field"><span>국적 / Nationality</span>REPUBLIC OF KOREA</div><div class="field"><span>생년월일 / Date of birth</span>15 1월/JAN 1990</div><div class="field"><span>만료일 / Date of expiry</span>01 5월/MAY 2030</div></div><div class="mrz">P&lt;KORHONG&lt;&lt;GILDONG&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>M123A45674KOR9001158M3005017&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;00</div></div></div>
+          <div class="checks" style="top:365px"><span class="check">사진 영역</span><span class="check">MRZ 2줄</span></div>
+          <div class="bottom-sheet"><div class="sheet-heading">인식 대상 <span>8개 영역 확인 중</span></div><div class="chips"><span class="chip">얼굴 사진</span><span class="chip">이름</span><span class="chip">여권번호</span><span class="chip">생년월일</span><span class="chip">여권종류</span><span class="chip">만료일</span><span class="chip">MRZ 1</span><span class="chip">MRZ 2</span></div></div>
+          <button class="shutter">⌾ 자동 인식</button>
+        </div>
+        <div class="card-copy"><span class="tag" style="color:#7effad">C · 품질 대시보드</span><h2>촬영 중 상태를 간결하게 표시</h2><p>문서 전체·반사·사진·MRZ 상태를 우선 보여주고, 하단에서 8개 인식 대상을 확인합니다.</p></div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

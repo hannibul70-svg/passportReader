@@ -2,6 +2,7 @@ class PassportResult {
   const PassportResult({
     required this.rawText,
     required this.mrzLines,
+    this.mrzOcrLines = const [],
     this.documentType,
     this.issuingCountry,
     this.surname,
@@ -21,6 +22,8 @@ class PassportResult {
 
   final String rawText;
   final List<String> mrzLines;
+  // 물리적 MRZ 1·2행. 불완전 인식도 보존하며 완전 판정과 분리한다.
+  final List<String> mrzOcrLines;
   final String? documentType;
   final String? issuingCountry;
   final String? surname;
@@ -38,6 +41,8 @@ class PassportResult {
   final bool compositeCheckPassed;
 
   bool get hasMrz => mrzLines.length == 2;
+
+  bool get hasPartialMrz => mrzLines.isNotEmpty && !hasMrz;
 
   bool get hasValidChecks =>
       documentNumberCheckPassed &&
